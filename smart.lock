@@ -1,0 +1,20 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "cordova-loader": {}
+    },
+    "packages": {
+      "cordova-loader": {
+        "git": "https://github.com/andrewreedy/meteor-cordova-loader.git",
+        "tag": "v0.0.5",
+        "commit": "5fd42f04ccc380ae9a5669f7f0c0948b28d9974d"
+      },
+      "log": {
+        "git": "https://github.com/andrewreedy/meteor-log.git",
+        "tag": "v0.0.2",
+        "commit": "110251d7d973611a0ac56db7e2af76fb3cc77af5"
+      }
+    }
+  }
+}
