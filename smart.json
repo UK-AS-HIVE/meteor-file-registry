@@ -1,5 +1,10 @@
 {
   "packages": {
-    "cordova-loader": {}
+    "cordova-loader": {},
+    "iron-router": {
+      "git": "https://github.com/EventedMind/iron-router.git",
+      "tag": "v0.7.1"
+    },
+    "bootstrap-3": {}
   }
 }

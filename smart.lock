@@ -2,7 +2,12 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "cordova-loader": {}
+      "cordova-loader": {},
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.7.1"
+      },
+      "bootstrap-3": {}
     },
     "packages": {
       "cordova-loader": {
@@ -10,10 +15,25 @@
         "tag": "v0.0.5",
         "commit": "5fd42f04ccc380ae9a5669f7f0c0948b28d9974d"
       },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.7.1",
+        "commit": "d1ffb3f06ea4c112132b030f2eb1a70b81675ecb"
+      },
+      "bootstrap-3": {
+        "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
+        "tag": "v3.2.0-1",
+        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
+      },
       "log": {
         "git": "https://github.com/andrewreedy/meteor-log.git",
         "tag": "v0.0.2",
         "commit": "110251d7d973611a0ac56db7e2af76fb3cc77af5"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.4",
+        "commit": "b40e9b0612329288d75cf52ad14a7da64bb8618f"
       }
     }
   }

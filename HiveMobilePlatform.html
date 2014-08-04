@@ -1,12 +1,25 @@
 <head>
   <title>HiveMobilePlatform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" media="print" href="/print.css" />
+  <link rel="icon" sizes="32x32" href="/favicon.png">
 </head>
 
-<body>
-  <h1>Hive Mobile Platform</h1>
+<template name="layoutTemplate">
+  {{> navBar}}
 
-  <input type="button" value="Upload" />
-  <input type="button" value="Photo" />
-  <input type="button" value="Audio" />
-  <input type="button" value="Video" />
-</body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        {{> yield}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="mainMenu">
+  <ul id="main-menu">
+    <li><a href="/manage">Manage</a></li>
+  </ul>
+</template>
+

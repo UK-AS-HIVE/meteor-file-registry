@@ -4,6 +4,7 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-autopublish
-insecure
 cordova-loader
+iron-router
+bootstrap-3
+coffeescript
