@@ -1,0 +1,8 @@
+{
+  "cordova": {
+    "path": "./.cordova",
+    "platforms": ["ios", "android"],
+    "logging": true
+  }
+}
+
