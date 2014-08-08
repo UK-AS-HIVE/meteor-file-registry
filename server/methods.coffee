@@ -15,7 +15,7 @@ Meteor.methods
 
     now = new Date()
     fn = @connection.id + '-' + now.getTime() + '-' + filename
-    fs.writeFileSync './files/' + fn, new Buffer(blob)
+    fs.writeFileSync './files/' + fn, new Buffer(data)
 
     FileRegistry.insert
       filename: filename

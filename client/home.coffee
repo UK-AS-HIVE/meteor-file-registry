@@ -1,10 +1,10 @@
 Template.home.events
   'click input[value="Upload"]': ->
-    Meteor.call 'upload','test', getMediaFunctions().pickLocalFile()
+    getMediaFunctions().pickLocalFile()
   'click input[value="Photo"]': ->
-    Meteor.call 'upload','test', getMediaFunctions().capturePhoto()
+    getMediaFunctions().capturePhoto()
   'click input[value="Audio"]': ->
-    Meteor.call 'upload','test', getMediaFunctions().captureAudio()
+    getMediaFunctions().captureAudio()
   'click input[value="Video"]': ->
     Meteor.call 'upload','test', getMediaFunctions().captureVideo()
 
