@@ -13,6 +13,9 @@ and
 
 Install all 3 and run
 
+    mrt install
     meteor
 
 in the base directory
+
+then navagate to http://localhost:3000
