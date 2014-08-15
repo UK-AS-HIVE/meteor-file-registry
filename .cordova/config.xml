@@ -7,6 +7,6 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
-    <content src="http://192.168.1.7:3000" />
+    <content src="http://192.168.1.7:3000?cordova=0.0.1" />
     <access origin="*" />
 </widget>
