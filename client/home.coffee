@@ -13,7 +13,7 @@ getMediaFunctions = ->
   requiredFunctions = ['pickLocalFile', 'capturePhoto', 'captureAudio', 'captureVideo']
 
   RunningInCordova = ->
-    /iPhone|iPad|iPod|Android/i.test navigator.platform
+    window._cordovaNative? || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
 
   if RunningInCordova()
     CordovaMedia
