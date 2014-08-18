@@ -1,5 +1,6 @@
 Router.configure
   layoutTemplate: 'layoutTemplate'
+  waitOn: -> [Meteor.subscribe 'fileRegistry']
 
 Router.map ->
   @route 'home',

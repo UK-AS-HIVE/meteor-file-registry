@@ -3,40 +3,39 @@
     # TODO: Get file from local fs/photo library
     return
   capturePhoto: ->
-    camera = new Camera()
-    camera.captureImage()
+    captureSuccess = (mediaFile) ->
+      console.log "Success!"
+      console.log (JSON.stringify mediaFile)
+      path = mediaFile[0].fullPath
+      #path =  cordova.file.tempDirectory + mediaFile[0].name
+      console.log path
+      window.resolveLocalFileSystemURL path, gotFile, fail
+    captureError = (error) ->
+      console.log('Error code: ' + error.code, null, 'Capture Error')
+      console.log('Full error: ' + JSON.stringify(error));
+
+    navigator.device.capture.captureImage(captureSuccess, captureError)
   captureAudio: ->
-    recorder = new AudioRecorder().captureAudio()
-    return
-  captureVideo: ->
-    # TODO: Record video from webcam or phone camera
-    return
-
-class AudioRecorder
-  captureSuccess = (mediaFile) ->
-    console.log "Success!"  
-    path =  cordova.file.tempDirectory + mediaFile[0].name
-    console.log path
-    window.resolveLocalFileSystemURL path, gotFile, fail
-  captureError = (error) ->
-    console.log "Something went wrong: " + error 
-    return
-  captureAudio : ->
-    console.log "Begin Recording"
+    captureSuccess = (mediaFile) ->
+      console.log "Success!"
+      path = mediaFile[0].fullPath
+      #path =  cordova.file.tempDirectory + mediaFile[0].name
+      console.log path
+      window.resolveLocalFileSystemURL path, gotFile, fail
+    captureError = (error) ->
+      console.log "Something went wrong: " + JSON.stringify( error )
     navigator.device.capture.captureAudio(captureSuccess, captureError)
-
-class Camera
-  captureSuccess = (mediaFile) ->
-    console.log "Success!"  
-    path =  cordova.file.tempDirectory + mediaFile[0].name
-    console.log path
-    window.resolveLocalFileSystemURL path, gotFile, fail
-  captureError = (error) ->
-    alert('Error code: ' + error.code, null, 'Capture Error');
-  captureImage : ->
-    navigator.device.capture.captureImage(captureSuccess, captureError);
-
-
+  captureVideo: ->
+    captureSuccess = (mediaFile) ->
+      console.log "Success!"
+      path = mediaFile[0].fullPath
+      #path =  cordova.file.tempDirectory + mediaFile[0].name
+      console.log path
+      window.resolveLocalFileSystemURL path, gotFile, fail
+    captureError = (error) ->
+      console.log "Something went wrong: " + JSON.stringify( error )
+    navigator.device.capture.captureVideo(captureSuccess, captureError)
+    return
 
 fail = (e) ->
   console.log "FileSystem Error"
@@ -49,7 +48,7 @@ gotFile = (fileEntry) ->
       console.log "Text is: " + @result
       console.log typeof(@result)
       blob = new Uint8Array(@result)
-      Meteor.call "upload", fileEntry.name , blob 
+      Meteor.call "upload", fileEntry.name , blob
       return
     reader.readAsArrayBuffer file
     return

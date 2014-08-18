@@ -1,3 +1,9 @@
+Template.home.helpers
+  connectionStatus: ->
+    Meteor.status().status
+  mediaFiles: ->
+    FileRegistry.find({}, {sort: {timestamp: -1}})
+
 Template.home.events
   'click input[value="Upload"]': ->
     getMediaFunctions().pickLocalFile()

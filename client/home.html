@@ -1,9 +1,19 @@
 <template name="home">
   <h1>HiveMobilePlatform</h1>
 
+  <div>Connection Status: {{connectionStatus}}</div>
+
   <input type="button" value="Upload" />
   <input type="button" value="Photo" />
   <input type="button" value="Audio" />
   <input type="button" value="Video" />
+
+  <ul>
+  {{#each mediaFiles}}
+    <li>{{filename}} - {{size}}</li>
+  {{/each}}
+  </ul>
+
 </template>
+
 
