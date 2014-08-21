@@ -6,7 +6,7 @@
     captureSuccess = (mediaFile) ->
       console.log "Success!"
       console.log (JSON.stringify mediaFile)
-      path = "file://" + mediaFile[0].fullPath
+      path =  resolvePath(mediaFile[0].fullPath)
       #path =  cordova.file.tempDirectory + mediaFile[0].name
       console.log path
       window.resolveLocalFileSystemURL path, gotFile, fail
@@ -28,7 +28,7 @@
   captureVideo: ->
     captureSuccess = (mediaFile) ->
       console.log "Success!"
-      path = "file://" + mediaFile[0].fullPath
+      path =  resolvePath(mediaFile[0].fullPath)
       #path =  cordova.file.tempDirectory + mediaFile[0].name
       console.log path
       window.resolveLocalFileSystemURL path, gotFile, fail
