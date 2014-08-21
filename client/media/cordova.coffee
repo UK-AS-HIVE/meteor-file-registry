@@ -6,7 +6,7 @@
     captureSuccess = (mediaFile) ->
       console.log "Success!"
       console.log (JSON.stringify mediaFile)
-      path = mediaFile[0].fullPath
+      path = "file://" + mediaFile[0].fullPath
       #path =  cordova.file.tempDirectory + mediaFile[0].name
       console.log path
       window.resolveLocalFileSystemURL path, gotFile, fail
@@ -18,7 +18,7 @@
   captureAudio: ->
     captureSuccess = (mediaFile) ->
       console.log "Success!"
-      path = mediaFile[0].fullPath
+      path =  resolvePath(mediaFile[0].fullPath)
       #path =  cordova.file.tempDirectory + mediaFile[0].name
       console.log path
       window.resolveLocalFileSystemURL path, gotFile, fail
@@ -28,7 +28,7 @@
   captureVideo: ->
     captureSuccess = (mediaFile) ->
       console.log "Success!"
-      path = mediaFile[0].fullPath
+      path = "file://" + mediaFile[0].fullPath
       #path =  cordova.file.tempDirectory + mediaFile[0].name
       console.log path
       window.resolveLocalFileSystemURL path, gotFile, fail
@@ -45,10 +45,15 @@ gotFile = (fileEntry) ->
   fileEntry.file (file) ->
     reader = new FileReader()
     reader.onloadend = (e) ->
-      console.log "Text is: " + @result
-      console.log typeof(@result)
       blob = new Uint8Array(@result)
       Meteor.call "upload", fileEntry.name , blob
       return
     reader.readAsArrayBuffer file
     return
+
+resolvePath = (path) ->
+  console.log(path.substr(0,4))
+  if (path.substr(0,4) != "file")
+    return "file://" + path
+  else
+    return path
