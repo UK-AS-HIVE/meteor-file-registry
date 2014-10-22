@@ -7,3 +7,5 @@ standard-app-packages
 iron:router
 mizzao:bootstrap-3
 coffeescript
+hive:media-capture
+
