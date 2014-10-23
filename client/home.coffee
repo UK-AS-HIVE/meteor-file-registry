@@ -3,6 +3,13 @@ Template.home.helpers
     Meteor.status().status
   mediaFiles: ->
     FileRegistry.find({}, {sort: {timestamp: -1}})
+  friendlySize: (bytes) ->
+    if bytes > 1024*1024
+      return (bytes/(1024*1024)).toFixed(2) + 'MB'
+    else if bytes > 1024
+      return (bytes/1024).toFixed(2) + 'KB'
+    else
+      return bytes
 
 Template.home.events
   'click input[value="Upload"]': ->
@@ -12,7 +19,7 @@ Template.home.events
   'click input[value="Audio"]': ->
     getMediaFunctions().captureAudio()
   'click input[value="Video"]': ->
-    Meteor.call 'upload','test', getMediaFunctions().captureVideo()
+    getMediaFunctions().captureVideo()
 
 # TODO: figure out when and where to run
 getMediaFunctions = ->
