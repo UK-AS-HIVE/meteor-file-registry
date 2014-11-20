@@ -14,11 +14,12 @@ Meteor.methods
       fs.mkdirSync './files'
 
     now = new Date()
-    fn = @connection.id + '-' + now.getTime() + '-' + filename
+    fn = @connection.id + '-' + filename
     fs.writeFileSync './files/' + fn, new Buffer(data)
 
     FileRegistry.insert
       filename: filename
+      filenameOnDisk: fn
       size: data.length
       timestamp: now
       userId: @userId
@@ -43,10 +44,10 @@ Meteor.methods
       fs.mkdirSync './files'
 
     now = new Date()
-    fn = @connection.id + '-' + now.getTime() + '-' + filename
+    fn = @connection.id + '-' + filename
     fs.appendFileSync './files/' + fn, new Buffer(data)
 
-    f = FileRegistry.findOne {filename: filename, userId: @userId}
+    f = FileRegistry.findOne {filename: filename, filenameOnDisk: fn, userId: @userId}
     if f?
       FileRegistry.update f._id,
         $set:
@@ -54,6 +55,7 @@ Meteor.methods
     else
       FileRegistry.insert
         filename: filename
+        filenameOnDisk: fn
         size: data.length
         timestamp: now
         userId: @userId
