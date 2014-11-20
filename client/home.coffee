@@ -2,7 +2,7 @@ Template.home.helpers
   connectionStatus: ->
     Meteor.status().status
   rootUrl: ->
-    __meteor_runtime_config__.ROOT_URL
+    __meteor_runtime_config__.ROOT_URL.replace /\/$/, ''
   mediaFiles: ->
     FileRegistry.find({}, {sort: {timestamp: -1}})
   friendlySize: (bytes) ->
