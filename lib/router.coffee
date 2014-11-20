@@ -9,9 +9,17 @@ Router.map ->
   @route 'serveFile',
     path: '/file/:filename'
     where: 'server'
-    action: (filename) ->
-      # TODO serve file
-      @response.end 'file'
+    action: ->
+      fs = Npm.require 'fs'
+      while process.cwd().indexOf('.meteor/local') > -1
+        process.chdir '..'
+      # TODO verify file exists
+      # TODO permissions check
+      @response.writeHead 200,
+        'Content-type': 'image/jpg'
+        'Content-Disposition': 'attachment; filename='+@params.filename
+      console.log 'serving ', @params.filename
+      @response.end fs.readFileSync ('files/' + @params.filename)
 
   @route 'serveThumbnail',
     path: '/thumbnail/:filename'
