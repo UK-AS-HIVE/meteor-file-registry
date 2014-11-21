@@ -2,7 +2,10 @@ Template.home.helpers
   connectionStatus: ->
     Meteor.status().status
   rootUrl: ->
-    __meteor_runtime_config__.ROOT_URL.replace /\/$/, ''
+    if Meteor.isCordova
+      __meteor_runtime_config__.ROOT_URL.replace(/\/$/, '') + __meteor_runtime_config__.ROOT_URL_PATH_PREFIX
+    else
+      __meteor_runtime_config__.ROOT_URL.replace /\/$/, ''
   mediaFiles: ->
     FileRegistry.find({}, {sort: {timestamp: -1}})
   friendlySize: (bytes) ->
