@@ -1,4 +1,4 @@
-@FileRegistry = new Meteor.Collection 'fileRegistry'
+FileRegistry = new Meteor.Collection 'fileRegistry'
 ###@FileRegistry.attachSchema new SimpleSchema
   filename:
     type: String
