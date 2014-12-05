@@ -8,5 +8,6 @@ iron:router
 mizzao:bootstrap-3
 coffeescript
 meteorhacks:fast-render
+hive:file-registry
 hive:media-capture
 
