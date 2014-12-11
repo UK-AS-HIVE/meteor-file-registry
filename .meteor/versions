@@ -22,6 +22,7 @@ follower-livedata@1.0.2
 geojson-utils@1.0.1
 hive:file-registry@0.0.0
 hive:media-capture@0.1.0
+hive:uploads@1.0.0
 html-tools@1.0.2
 htmljs@1.0.2
 http@1.0.8
