@@ -13,6 +13,7 @@ Package.onUse(function(api) {
   api.use('hive:uploads');
   api.use(['coffeescript']);
 
+  api.addFiles('common.coffee', 'client');
   api.addFiles('cordova.coffee', 'web.cordova');
   api.addFiles('web.coffee', 'web.browser');
 });

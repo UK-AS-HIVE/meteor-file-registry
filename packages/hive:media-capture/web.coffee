@@ -1,6 +1,10 @@
 @WebMedia =
   pickLocalFile: ->
-    # TODO: Get file from local fs/photo library
+    fileInput = $('<input type="file" multiple />')
+    fileInput.on 'change', (e) ->
+      console.log e.target.files
+      _.each e.target.files, sendFile
+    fileInput.trigger 'click'
     return
   capturePhoto: ->
     # TODO: Take snapshot from webcam or phone camera
