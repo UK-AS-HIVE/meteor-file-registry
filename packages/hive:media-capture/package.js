@@ -10,7 +10,7 @@ Cordova.depends({
 
 Package.onUse(function(api) {
   api.versionsFrom("METEOR@0.9.4");
-
+  api.use('hive:uploads');
   api.use(['coffeescript']);
 
   api.addFiles('cordova.coffee', 'web.cordova');
