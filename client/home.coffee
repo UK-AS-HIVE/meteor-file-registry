@@ -15,6 +15,10 @@ Template.home.helpers
       return (bytes/1024).toFixed(2) + 'KB'
     else
       return bytes
+  isVideo: ->
+    @filename.toLowerCase().lastIndexOf('.mov') is @filename.length-4
+  isImage: ->
+    @filename.toLowerCase().lastIndexOf('.jpg') is @filename.length-4 or @filename.toLowerCase().lastIndexOf('.png') is @filename.length-4
 
 Template.home.events
   'click input[value="Upload"]': ->

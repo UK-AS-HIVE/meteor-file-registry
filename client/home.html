@@ -3,14 +3,24 @@
 
   <div>Connection Status: {{connectionStatus}}</div>
 
-  <input type="button" value="Upload" />
-  <input type="button" value="Photo" />
-  <input type="button" value="Audio" />
-  <input type="button" value="Video" />
+  <div class="btn-group">
+    <input type="button" class="btn btn-default" value="Upload" />
+    <input type="button" class="btn btn-default" value="Photo" />
+    <input type="button" class="btn btn-default" value="Audio" />
+    <input type="button" class="btn btn-default" value="Video" />
+  </div>
 
   <ul>
   {{#each mediaFiles}}
-    <li><img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{filenameOnDisk}}"/>{{filename}} - {{friendlySize size}}</li>
+    {{#if isVideo}}
+      <li><video src="{{rootUrl}}/file/{{filenameOnDisk}}" controls="controls" preload="metadata"></video>{{filename}} - {{friendlySize size}}</li>
+    {{else}}
+      {{#if isImage}}
+        <li><img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{filenameOnDisk}}"/>{{filename}} - {{friendlySize size}}</li>
+      {{else}}
+        <li>File - {{filename}} - {{friendlySize size}}</li>
+      {{/if}}
+    {{/if}}
   {{/each}}
   </ul>
 
