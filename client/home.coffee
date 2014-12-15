@@ -1,3 +1,13 @@
+endsWithAnyOf = (filename, extensions) ->
+  check filename, String
+  check extensions, Array
+
+  f = filename.toLowerCase()
+
+  for e in extensions
+    if f.lastIndexOf(e.toLowerCase()) is f.length-e.length then return true
+  return false
+
 Template.home.helpers
   connectionStatus: ->
     Meteor.status().status
@@ -16,9 +26,9 @@ Template.home.helpers
     else
       return bytes
   isVideo: ->
-    @filename.toLowerCase().lastIndexOf('.mov') is @filename.length-4
+    endsWithAnyOf @filename, ['.mov', '.mp4']
   isImage: ->
-    @filename.toLowerCase().lastIndexOf('.jpg') is @filename.length-4 or @filename.toLowerCase().lastIndexOf('.png') is @filename.length-4
+    endsWithAnyOf @filename, ['.jpg', '.png']
 
 Template.home.events
   'click input[value="Upload"]': ->
