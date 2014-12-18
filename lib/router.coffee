@@ -11,23 +11,24 @@ Router.map ->
     where: 'server'
     action: ->
       fs = Npm.require 'fs'
-      filePath = process.cwd()
-      localPathIndex = filePath.indexOf('.meteor/local')
-      filePath = filePath.substr(0, localPathIndex)+'.meteor' if localPathIndex > -1
       # TODO verify file exists
       # TODO permissions check
       @response.writeHead 200,
         'Content-type': 'image/jpg'
         'Content-Disposition': 'attachment; filename='+@params.filename
       console.log 'serving ', @params.filename
-      @response.end fs.readFileSync (filePath + '/files/' + @params.filename)
+      @response.end fs.readFileSync (FileRegistry.getFileRoot() + @params.filename)
 
   @route 'serveThumbnail',
     path: '/thumbnail/:filename'
     where: 'server'
     action: (filename) ->
-      # TODO serve thumbnail
-      @response.end 'thumbnail'
+      fs = Npm.require 'fs'
+      # TODO verify thumbnail exists
+      # TODO permissions check
+      @response.writeHead 200,
+        'Content-type': 'image/jpg'
+      @response.end fs.readFileSync (FileRegistry.getFileRoot() + @params.filename.substr(0, @params.filename.lastIndexOf('.')) + '_thumbnail.jpg')
 
   @route 'exportJSON',
     path: '/export/:dataset/json'
