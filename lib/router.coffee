@@ -1,6 +1,6 @@
 Router.configure
   layoutTemplate: 'layoutTemplate'
-  waitOn: -> [Meteor.subscribe 'fileRegistry']
+  waitOn: -> [Meteor.subscribe 'fileRegistry', Meteor.subscribe 'jobQueue']
 
 Router.map ->
   @route 'home',

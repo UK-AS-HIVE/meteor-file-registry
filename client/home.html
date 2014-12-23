@@ -13,10 +13,10 @@
   <ul>
   {{#each mediaFiles}}
     {{#if isVideo}}
-      <li><video src="{{rootUrl}}/file/{{filenameOnDisk}}" controls="controls" preload="metadata"></video>{{filename}} - {{friendlySize size}}</li>
+      <li><video style="max-width: 256px;" src="{{rootUrl}}/file/{{filenameOnDisk}}" controls="controls" preload="metadata"></video>{{filename}} - {{friendlySize size}}</li>
     {{else}}
       {{#if isImage}}
-        <li><img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{filenameOnDisk}}"/>{{filename}} - {{friendlySize size}}</li>
+        <li><img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/thumbnail/{{filenameOnDisk}}"/>{{filename}} - {{friendlySize size}}</li>
       {{else}}
         <li>File - {{filename}} - {{friendlySize size}}</li>
       {{/if}}
@@ -24,6 +24,24 @@
   {{/each}}
   </ul>
 
+  <hr />
+
+  {{> jobQueue}}
 </template>
 
+<template name="jobQueue">
+  <table class="table">
+    <tbody>
+      {{#each job}}
+        <tr>
+          <td>{{submitTime}}</td>
+          <td>{{processor}}</td>
+          <td>{{status}}</td>
+          <td>{{hostname}}</td>
+          <td>{{inspect settings}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
 

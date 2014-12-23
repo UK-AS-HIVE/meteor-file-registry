@@ -1,8 +1,14 @@
 {
-  "cordova": {
-    "path": "./.cordova",
-    "platforms": ["ios", "android"],
-    "logging": true
+  "workers": {
+    "processes": 2,
+    "perProcess": 10,
+    "monq": {
+    },
+    "cron": {
+      "log": false,
+      "disable": false,
+      "startDelay": 60000
+    }
   }
 }
 

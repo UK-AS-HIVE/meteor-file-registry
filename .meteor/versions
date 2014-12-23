@@ -16,6 +16,7 @@ ctl-helper@1.0.4
 ctl@1.0.2
 ddp@1.0.11
 deps@1.0.5
+differential:workers@0.1.1
 ejson@1.0.4
 fastclick@1.0.1
 follower-livedata@1.0.2
@@ -52,6 +53,7 @@ mongo-livedata@1.0.6
 mongo@1.0.8
 observe-sequence@1.0.3
 ordered-dict@1.0.1
+percolatestudio:synced-cron@1.0.0
 random@1.0.1
 reactive-dict@1.0.4
 reactive-var@1.0.3
@@ -70,3 +72,4 @@ underscore@1.0.1
 url@1.0.2
 webapp-hashing@1.0.1
 webapp@1.1.4
+wizonesolutions:underscore-string@1.0.0

@@ -52,3 +52,7 @@ getMediaFunctions = ->
   else
     WebMedia
 
+
+Template.jobQueue.helpers
+  job: -> JobQueue.find({}, {sort: {submitTime: 1}})
+  inspect: (o) -> JSON.stringify o
