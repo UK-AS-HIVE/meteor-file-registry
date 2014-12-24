@@ -1,6 +1,6 @@
 Router.configure
   layoutTemplate: 'layoutTemplate'
-  waitOn: -> [Meteor.subscribe 'fileRegistry', Meteor.subscribe 'jobQueue']
+  waitOn: -> [Meteor.subscribe 'fileRegistry', Meteor.subscribe 'jobs']
 
 Router.map ->
   @route 'home',
@@ -14,8 +14,8 @@ Router.map ->
       # TODO verify file exists
       # TODO permissions check
       @response.writeHead 200,
+        'Content-Disposition': 'attachment; filename='+@params.filename.substr(@params.filename.indexOf('-')+1)
         'Content-type': 'image/jpg'
-        'Content-Disposition': 'attachment; filename='+@params.filename
       console.log 'serving ', @params.filename
       @response.end fs.readFileSync (FileRegistry.getFileRoot() + @params.filename)
 

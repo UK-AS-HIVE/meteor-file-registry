@@ -1,6 +1,6 @@
 Meteor.publish 'fileRegistry', ->
-  FileRegistry.find()
+  FileRegistry.find({}, {limit: 48, sort: {timestamp: -1}})
 
-Meteor.publish 'jobQueue', ->
-  Jobs.find {}, {limit: 10, sort: {submitTime: -1}}
+Meteor.publish 'jobs', ->
+  Jobs.find {}, {limit: 5, sort: {ended: -1}}
 

@@ -17,7 +17,7 @@ execProcesses = (cmd) ->
     #Workers.log 'stdout: ' + data
     parse_text += data
   p.stderr.on 'data', (data) ->
-    #Workers.log 'stderr: ' + data
+    Workers.log 'stderr: ' + data
   p.on 'close', (code, signal) =>
     f.return parse_text
 
@@ -26,22 +26,24 @@ execProcesses = (cmd) ->
 class @ThumbnailJob extends Job
   handleJob: ->
     fr = FileRegistry.getFileRoot()
-    src = '"'+fr+@params.filenameOnDisk+'[0]"'
-    thumbnail = @params.filenameOnDisk.substr(0,@params.filenameOnDisk.lastIndexOf('.'))+'_thumbnail.jpg'
-    dst = '"'+fr+thumbnail+'"'
-    cmd = ["convert #{src} -resize 128x128 #{dst}"]
+    fd = @params.filenameOnDisk
+    src = fr+fd
+    thumbnail = fd.substr(0,fd.lastIndexOf('.'))+'_thumbnail.jpg'
+    dst = fr+thumbnail
+    ext = fd.substr(fd.lastIndexOf('.')).toLowerCase()
+    cmd = "convert \"#{src}[0]\" -resize 128x128 \"#{dst}\""
 
     execProcesses cmd
 
     FileRegistry.update {filenameOnDisk: @params.filenameOnDisk}, {$set: {thumbnail: thumbnail} }
-    Workers.log 'ThumbnailJob: thumbnailed ', @params.filenameOnDisk
+    #Workers.log 'ThumbnailJob: thumbnailed ', @params.filenameOnDisk
 
 class @Md5Job extends Job
   handleJob: ->
     fn = @params.filenameOnDisk
     md5 = execProcesses('md5 "'+FileRegistry.getFileRoot()+fn+'"')
     md5 = md5.substr(md5.length-32)
-    Workers.log 'Md5Job: ', fn, '-', md5
+    #Workers.log 'Md5Job: ', fn, '-', md5
 
     FileRegistry.update {filenameOnDisk: fn}, {$set: {md5: md5} }
 

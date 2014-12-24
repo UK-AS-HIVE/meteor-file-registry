@@ -10,22 +10,44 @@
     <input type="button" class="btn btn-default" value="Video" />
   </div>
 
-  <div class="row">
-    {{#each mediaFiles}}
-    <div class="col-md-3">
-      <div class="well">
-        <div style="overflow: hidden;">
-          <a class="download-link" style="float: right;" href="{{rootUrl}}/file/{{filenameOnDisk}}"><i class="glyphicon glyphicon-download"></i></a>
-          <img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{thumbnail}}"/><br/>
-          <strong>{{filename}}</strong><br/>
-          {{timestamp}}<br/>
-          {{friendlySize size}}<br/>
-          <small>{{md5}}</small><br/>
-        </div>
-      </div>
-    </div>
-    {{/each}}
+  <div class="btn-group">
+    <input type="button" class="btn btn-default btn-toggle" value="Thumbnails" />
+    <input type="button" class="btn btn-default btn-toggle" value="Cards" />
   </div>
+
+  <hr />
+
+  {{#if cardMode}}
+    <div class="row">
+      {{#each mediaFiles}}
+        <div class="col-md-3">
+          <div class="well animated fadeInUp">
+            <div style="overflow: hidden;">
+              <a class="download-link" style="float: right;" href="{{rootUrl}}/file/{{filenameOnDisk}}"><i class="glyphicon glyphicon-download"></i></a>
+              {{#if thumbnail}}
+                <img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{thumbnail}}"/><br/>
+              {{/if}}
+              <strong>{{filename}}</strong><br/>
+              {{moment timestamp}}<br/>
+              {{friendlySize size}}<br/>
+              <small>{{md5}}</small><br/>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="row" style="margin-left:-5px; margin-right:8px;">
+      {{#each mediaFiles}}
+        <div class="col-xs-1">
+          {{#if thumbnail}}
+            <div class="thumbnail animated fadeInUp" style="width: 6vw"><img style="max-height: 4vw" src="{{rootUrl}}/file/{{thumbnail}}"/></div>
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+
 
   <hr />
 
@@ -37,10 +59,12 @@
     <tbody>
       {{#each job}}
         <tr>
-          <td>{{ended}}</td>
+          <td>{{moment enqueued}}</td>
+          <td>{{moment dequeued}}</td>
+          <td>{{moment ended}}</td>
           <td>{{name}}</td>
           <td>{{status}}</td>
-          <td>{{params}}</td>
+          <td>{{inspect params}}</td>
         </tr>
       {{/each}}
     </tbody>

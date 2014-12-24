@@ -17,7 +17,8 @@ Template.home.helpers
     else
       __meteor_runtime_config__.ROOT_URL.replace /\/$/, ''
   mediaFiles: ->
-    FileRegistry.find({}, {sort: {timestamp: -1}})
+    currentSearch = Session.get('currentSearch') || ''
+    FileRegistry.find({filename: {$regex: currentSearch, $options: 'i'}}, {sort: {timestamp: -1}})
   friendlySize: (bytes) ->
     if bytes > 1024*1024
       return (bytes/(1024*1024)).toFixed(2) + 'MB'
@@ -29,6 +30,11 @@ Template.home.helpers
     endsWithAnyOf @filename, ['.mov', '.mp4']
   isImage: ->
     endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png']
+  moment: (d) -> moment(d).fromNow()
+  cardMode: ->
+    Session.setDefault 'cardMode', false
+    Session.get 'cardMode'
+
 
 Template.home.events
   'click input[value="Upload"]': ->
@@ -39,6 +45,10 @@ Template.home.events
     getMediaFunctions().captureAudio()
   'click input[value="Video"]': ->
     getMediaFunctions().captureVideo()
+  'click input[value="Thumbnails"]': ->
+    Session.set 'cardMode', false
+  'click input[value="Cards"]': ->
+    Session.set 'cardMode', true
 
 # TODO: figure out when and where to run
 getMediaFunctions = ->
@@ -55,5 +65,6 @@ getMediaFunctions = ->
 Jobs = new Meteor.Collection 'jobs'
 
 Template.jobQueue.helpers
-  job: -> Jobs.find({}, {sort: {ended: 1}})
+  job: -> Jobs.find({}, {sort: {ended: -1}})
   inspect: (o) -> JSON.stringify o
+  moment: (d) -> moment(d).fromNow()
