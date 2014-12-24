@@ -24,8 +24,7 @@ Meteor.methods
       timestamp: now
       userId: @userId
 
-    Workers.push new Md5Job filenameOnDisk: fn
-    Workers.push new ThumbnailJob filenameOnDisk: fn
+    FileRegistry.scheduleJobsForFile fn
 
   'uploadSlice': (filename, data, offset, total) ->
     console.log 'uploadSlice', filename, offset, total
@@ -66,7 +65,7 @@ Meteor.methods
         timestamp: now
         userId: @userId
 
+  
     if offset+data.length >= total
-      Workers.push new Md5Job filenameOnDisk: fn
-      Workers.push new ThumbnailJob filenameOnDisk: fn
+      FileRegistry.scheduleJobsForFile fn
 

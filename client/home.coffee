@@ -26,9 +26,9 @@ Template.home.helpers
     else
       return bytes
   isVideo: ->
-    endsWithAnyOf @filename, ['.mov', '.mp4']
+    endsWithAnyOf @filename, ['.mov', '.mp4', '.avi', '.mpeg', '.mkv', '.flv', '.3gp', '.3g2', '.m4v', '.m2v', '.webm']
   isImage: ->
-    endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png']
+    endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png', '.gif'] 
 
 Template.home.events
   'click input[value="Upload"]': ->
@@ -57,3 +57,4 @@ Jobs = new Meteor.Collection 'jobs'
 Template.jobQueue.helpers
   job: -> Jobs.find({}, {sort: {ended: 1}})
   inspect: (o) -> JSON.stringify o
+
