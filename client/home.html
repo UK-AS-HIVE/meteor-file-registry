@@ -10,19 +10,22 @@
     <input type="button" class="btn btn-default" value="Video" />
   </div>
 
-  <ul>
-  {{#each mediaFiles}}
-    {{#if isVideo}}
-      <li><video style="max-width: 256px;" src="{{rootUrl}}/file/{{filenameOnDisk}}" controls="controls" preload="metadata"></video>{{filename}} - {{friendlySize size}}</li>
-    {{else}}
-      {{#if isImage}}
-        <li><img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/thumbnail/{{filenameOnDisk}}"/>{{filename}} - {{friendlySize size}}</li>
-      {{else}}
-        <li>File - {{filename}} - {{friendlySize size}}</li>
-      {{/if}}
-    {{/if}}
-  {{/each}}
-  </ul>
+  <div class="row">
+    {{#each mediaFiles}}
+    <div class="col-md-3">
+      <div class="well">
+        <div style="overflow: hidden;">
+          <a class="download-link" style="float: right;" href="{{rootUrl}}/file/{{filenameOnDisk}}"><i class="glyphicon glyphicon-download"></i></a>
+          <img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{thumbnail}}"/><br/>
+          <strong>{{filename}}</strong><br/>
+          {{timestamp}}<br/>
+          {{friendlySize size}}<br/>
+          <small>{{md5}}</small><br/>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
 
   <hr />
 
@@ -34,11 +37,10 @@
     <tbody>
       {{#each job}}
         <tr>
-          <td>{{submitTime}}</td>
-          <td>{{processor}}</td>
+          <td>{{ended}}</td>
+          <td>{{name}}</td>
           <td>{{status}}</td>
-          <td>{{hostname}}</td>
-          <td>{{inspect settings}}</td>
+          <td>{{params}}</td>
         </tr>
       {{/each}}
     </tbody>

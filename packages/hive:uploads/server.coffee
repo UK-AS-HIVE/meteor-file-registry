@@ -6,12 +6,12 @@ Meteor.methods
     fs = Npm.require 'fs'
 
     # Make sure we aren't deep in the build structure
-    if process.cwd().indexOf('.meteor/local') > -1
-      process.chdir '../../../..'
+    #if process.cwd().indexOf('.meteor/local') > -1
+    #  process.chdir '../../../..'
 
     # Make sure directory to store uploads in exists
-    if not fs.existsSync('./files')
-      fs.mkdirSync './files'
+    #if not fs.existsSync('./files')
+    #  fs.mkdirSync './files'
 
     now = new Date()
     fn = @connection.id + '-' + filename
@@ -24,13 +24,11 @@ Meteor.methods
       timestamp: now
       userId: @userId
 
-    console.log 'Scheduling md5 for ' + filename + '...'
-    Workers.push new ForkJob 'md5', [FileRegistry.getFileRoot()+fn]
-    console.log 'Making thumbnail for ' + filename + '...'
-    Workers.push new ForkJob('convert', [FileRegistry.getFileRoot()+fn+'[0]','-resize', '64x64',FileRegistry.getFileRoot()+fn.substr(0,fn.lastIndexOf('.'))+'_thumbnail.jpg'])
+    Workers.push new Md5Job filenameOnDisk: fn
+    Workers.push new ThumbnailJob filenameOnDisk: fn
 
-  'uploadSlice': (filename, data, offset) ->
-    console.log 'uploadSlice', filename, offset
+  'uploadSlice': (filename, data, offset, total) ->
+    console.log 'uploadSlice', filename, offset, total
 
     check filename, String
     check data, Uint8Array
@@ -58,12 +56,17 @@ Meteor.methods
     if f?
       FileRegistry.update f._id,
         $set:
-          size: f.size+data.length
+          uploaded: f.size+data.length
     else
       FileRegistry.insert
         filename: filename
         filenameOnDisk: fn
-        size: data.length
+        uploaded: offset+data.length
+        size: total
         timestamp: now
         userId: @userId
+
+    if offset+data.length >= total
+      Workers.push new Md5Job filenameOnDisk: fn
+      Workers.push new ThumbnailJob filenameOnDisk: fn
 

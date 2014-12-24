@@ -13,7 +13,7 @@
     reader = new FileReader()
     reader.onloadend = (e) ->
       blob = new Uint8Array(@result)
-      Meteor.call "uploadSlice", file.name , blob, start, ->
+      Meteor.call "uploadSlice", file.name , blob, start, file.size, ->
         sendSlice file, start+sliceSize
     reader.readAsArrayBuffer slice
 

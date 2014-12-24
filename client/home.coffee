@@ -28,7 +28,7 @@ Template.home.helpers
   isVideo: ->
     endsWithAnyOf @filename, ['.mov', '.mp4']
   isImage: ->
-    endsWithAnyOf @filename, ['.jpg', '.png']
+    endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png']
 
 Template.home.events
   'click input[value="Upload"]': ->
@@ -52,7 +52,8 @@ getMediaFunctions = ->
   else
     WebMedia
 
+Jobs = new Meteor.Collection 'jobs'
 
 Template.jobQueue.helpers
-  job: -> JobQueue.find({}, {sort: {submitTime: 1}})
+  job: -> Jobs.find({}, {sort: {ended: 1}})
   inspect: (o) -> JSON.stringify o
