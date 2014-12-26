@@ -21,7 +21,7 @@
     <div class="row">
       {{#each mediaFiles}}
         <div class="col-md-3">
-          <div class="well animated fadeInUp">
+          <div class="well animated fadeIn">
             <div style="overflow: hidden;">
               <a class="download-link" style="float: right;" href="{{rootUrl}}/file/{{filenameOnDisk}}"><i class="glyphicon glyphicon-download"></i></a>
               {{#if thumbnail}}
@@ -41,7 +41,7 @@
       {{#each mediaFiles}}
         <div class="col-xs-1">
           {{#if thumbnail}}
-            <div class="thumbnail animated fadeInUp" style="width: 6vw"><img style="max-height: 4vw" src="{{rootUrl}}/file/{{thumbnail}}"/></div>
+            <div class="thumbnail animated fadeIn" style="width: 6vw"><img style="max-height: 4vw" src="{{rootUrl}}/file/{{thumbnail}}"/></div>
           {{/if}}
         </div>
       {{/each}}

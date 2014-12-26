@@ -27,14 +27,14 @@ Template.home.helpers
     else
       return bytes
   isVideo: ->
-    endsWithAnyOf @filename, ['.mov', '.mp4']
+    endsWithAnyOf @filename, ['.mov', '.mp4', '.avi', '.mpeg', '.mkv', '.flv', '.3gp', '.3g2', '.m4v', '.m2v', '.webm']
   isImage: ->
-    endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png']
-  moment: (d) -> moment(d).fromNow()
+    endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png', '.gif']
+  moment: (d) ->
+    moment(d).fromNow()
   cardMode: ->
     Session.setDefault 'cardMode', false
     Session.get 'cardMode'
-
 
 Template.home.events
   'click input[value="Upload"]': ->
@@ -68,3 +68,4 @@ Template.jobQueue.helpers
   job: -> Jobs.find({}, {sort: {ended: -1}})
   inspect: (o) -> JSON.stringify o
   moment: (d) -> moment(d).fromNow()
+

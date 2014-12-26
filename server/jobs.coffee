@@ -52,4 +52,17 @@ class @ExecJob extends Job
     execProcesses @params.cmd
     #Workers.log 'Exec: ' + @params.command.command + ' ' + (if @params.command.args.join? then @params.command.args.join(' ') else @params.command.args)
 
+class @VideoTranscodeJob extends Job
+  handleJob: ->
+    fn = FileRegistry.findOne({filenameOnDisk: @params.filenameOnDisk}).filename
+    fr = FileRegistry.getFileRoot()
+    src = '"'+fr+@params.filenameOnDisk+'"'
+    converted = @params.filenameOnDisk.substr(0,@params.filenameOnDisk.lastIndexOf('.'))+'.'+@params.targetType
+    convertedFn = fn.substr(0, fn.lastIndexOf('.')) + '.' + @params.targetType
+    dst = '"'+fr+converted+'"'
+    cmd = ["ffmpeg -i #{src} -y #{dst}"]
 
+    execProcesses cmd
+    
+    FileRegistry.update {filename: fn}, {$set: {filename: convertedFn, filenameOnDisk: converted } } #Point the FileRegistry to our new converted files. TODO: delete old files?
+    Workers.log 'VideoTranscodeJob: converted ', @params.filenameOnDisk, 'to type ', @params.targetType
