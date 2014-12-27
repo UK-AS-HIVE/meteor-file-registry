@@ -34,7 +34,7 @@ if Meteor.isServer
   FileRegistry.scheduleJobsForFile = (filenameOnDisk) ->
     #TODO: This is the wrong place for this. This would make our FileRegistry package dependent on job classes in our app code as well as differential:workers.
     #      Either we need to move these jobs into this package or put them into another one.
-    images = ['jpg', 'jpeg', 'png', 'gif']
+    images = ['jpg', 'jpeg', 'png', 'gif', 'tif', 'tiff', 'tga', 'bmp', 'cr2']
     videos = ['mp4', 'mpeg', 'avi', 'mov', 'webm', 'flv', 'mkv', '3gp', 'm4v', '3g2', 'm2v'] #This is a pretty extensive list
     Workers.push new Md5Job filenameOnDisk: filenameOnDisk
     if endsWithAnyOf filenameOnDisk, images.concat(videos)
