@@ -13,9 +13,12 @@ Router.map ->
       fs = Npm.require 'fs'
       # TODO verify file exists
       # TODO permissions check
+      expire = new Date()
+      expire.setFullYear(expire.getFullYear()+1)
       @response.writeHead 200,
         'Content-Disposition': 'attachment; filename='+@params.filename.substr(@params.filename.indexOf('-')+1)
         'Content-type': 'image/jpg'
+        'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
       console.log 'serving ', @params.filename
       @response.end fs.readFileSync (FileRegistry.getFileRoot() + @params.filename)
 
@@ -26,8 +29,11 @@ Router.map ->
       fs = Npm.require 'fs'
       # TODO verify thumbnail exists
       # TODO permissions check
+      expire = new Date()
+      expire.setFullYear(expire.getFullYear()+1)
       @response.writeHead 200,
         'Content-type': 'image/jpg'
+        'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
       @response.end fs.readFileSync (FileRegistry.getFileRoot() + @params.filename.substr(0, @params.filename.lastIndexOf('.')) + '_thumbnail.jpg')
 
   @route 'exportJSON',
