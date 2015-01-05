@@ -20,6 +20,6 @@
   sendSlice file, 0
   return
 
-sendFileEntry = (fileEntry) ->
+@sendFileEntry = (fileEntry) ->
   fileEntry.file sendFile
 
