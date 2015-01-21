@@ -6,7 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-  api.use('coffeescript');
+  api.use(['coffeescript', 'mongo'], ['client', 'server']);
   api.use('hive:file-registry','server');
   api.versionsFrom('1.0');
   api.addFiles('server.coffee','server');

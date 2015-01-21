@@ -10,5 +10,8 @@
       "startDelay": 60000
     }
   }
+  "fileRegistry": {
+    "videoTargetType": "mp4"
+  }
 }
 

@@ -11,7 +11,7 @@ meteorhacks:fast-render
 hive:file-registry
 hive:uploads
 hive:media-capture
-differential:workers
 percolatestudio:synced-cron
 momentjs:moment
 
+differential:workers

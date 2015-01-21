@@ -5,8 +5,10 @@ Package.describe({
 
 Package.onUse(function(api, where) {
   api.versionsFrom("METEOR@1.0");
-  api.use(['coffeescript', 'aldeed:collection2@2.2.0'], ['client', 'server']);
+  api.use(['coffeescript', 'aldeed:collection2@2.2.0', 'mongo'], ['client', 'server']);
+  api.use('differential:workers@2.0.0','server')
   api.addFiles(['file-registry.coffee'], ['client', 'server'])
+  api.addFiles('jobs.coffee', 'server');
   api.export(['FileRegistry'], ['client', 'server']);
 });
 

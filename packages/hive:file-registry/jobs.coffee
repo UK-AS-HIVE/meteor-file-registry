@@ -16,8 +16,6 @@ execProcesses = (cmd) ->
   p.stdout.on 'data', (data) ->
     #Workers.log 'stdout: ' + data
     parse_text += data
-  p.stderr.on 'data', (data) ->
-    Workers.log 'stderr: ' + data
   p.on 'close', (code, signal) =>
     f.return parse_text
 
@@ -36,14 +34,14 @@ class @ThumbnailJob extends Job
     execProcesses cmd
 
     FileRegistry.update {filenameOnDisk: @params.filenameOnDisk}, {$set: {thumbnail: thumbnail} }
-    #Workers.log 'ThumbnailJob: thumbnailed ', @params.filenameOnDisk
+    Cluster.log 'ThumbnailJob: thumbnailed ', @params.filenameOnDisk
 
 class @Md5Job extends Job
   handleJob: ->
     fn = @params.filenameOnDisk
     md5 = execProcesses('md5 "'+FileRegistry.getFileRoot()+fn+'"')
     md5 = md5.substr(md5.length-32)
-    #Workers.log 'Md5Job: ', fn, '-', md5
+    Cluster.log 'Md5Job: ', fn, '-', md5
 
     FileRegistry.update {filenameOnDisk: fn}, {$set: {md5: md5} }
 
@@ -53,16 +51,36 @@ class @ExecJob extends Job
     #Workers.log 'Exec: ' + @params.command.command + ' ' + (if @params.command.args.join? then @params.command.args.join(' ') else @params.command.args)
 
 class @VideoTranscodeJob extends Job
+
   handleJob: ->
     fn = FileRegistry.findOne({filenameOnDisk: @params.filenameOnDisk}).filename
     fr = FileRegistry.getFileRoot()
     src = '"'+fr+@params.filenameOnDisk+'"'
-    converted = @params.filenameOnDisk.substr(0,@params.filenameOnDisk.lastIndexOf('.'))+'.'+@params.targetType
-    convertedFn = fn.substr(0, fn.lastIndexOf('.')) + '.' + @params.targetType
-    dst = '"'+fr+converted+'"'
+    converted = fn.substr(0, fn.lastIndexOf('.')) + '.' + @params.targetType
+    convertedFn = @params.filenameOnDisk.substr(0,@params.filenameOnDisk.lastIndexOf('.'))+'.'+@params.targetType
+    dst = '"'+fr+convertedFn+'"'
     cmd = ["ffmpeg -i #{src} -y #{dst}"]
-
     execProcesses cmd
-    
-    FileRegistry.update {filename: fn}, {$set: {filename: convertedFn, filenameOnDisk: converted } } #Point the FileRegistry to our new converted files. TODO: delete old files?
-    Workers.log 'VideoTranscodeJob: converted ', @params.filenameOnDisk, 'to type ', @params.targetType
+
+  afterJob: ->
+    fs = Npm.require 'fs'
+    #Not sure if there's a better way than just redoing all of our file name stuff. Not much of this is intensive though.
+    fn = FileRegistry.findOne({filenameOnDisk: @params.filenameOnDisk}).filename
+    fr = FileRegistry.getFileRoot()
+    src = '"'+fr+@params.filenameOnDisk+'"'
+    converted = fn.substr(0, fn.lastIndexOf('.')) + '.' + @params.targetType
+    convertedFn = @params.filenameOnDisk.substr(0,@params.filenameOnDisk.lastIndexOf('.'))+'.'+@params.targetType
+    dst = fr+convertedFn
+    stats = fs.statSync dst
+    FileRegistry.insert
+      filename: converted
+      filenameOnDisk: convertedFn
+      size: stats['size']
+      timestamp: new Date()
+      userId: @userId
+
+    #Get an Md5 and Thumbnail for our new file.
+    Job.push new Md5Job filenameOnDisk: convertedFn
+    Job.push new ThumbnailJob filenameOnDisk: convertedFn
+
+    Cluster.log 'VideoTranscodeJob: converted ', @params.filenameOnDisk, 'to type ', @params.targetType
