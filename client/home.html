@@ -25,7 +25,11 @@
             <div style="overflow: hidden;">
               <a class="download-link" style="float: right;" href="{{rootUrl}}/file/{{filenameOnDisk}}"><i class="glyphicon glyphicon-download"></i></a>
               {{#if thumbnail}}
-                <img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{thumbnail}}"/><br/>
+                {{#if isVideo}}
+                  <video style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{filenameOnDisk}}" controls="controls" poster="{{rootUrl}}/file/{{thumbnail}}"></video><br/>
+                {{else}}
+                  <img style="max-width: 128px; max-height: 128px" src="{{rootUrl}}/file/{{thumbnail}}"/><br/>
+                {{/if}}
               {{/if}}
               <strong>{{filename}}</strong><br/>
               {{moment timestamp}}<br/>
