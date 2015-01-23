@@ -27,7 +27,7 @@ Template.home.helpers
     else
       return bytes
   isVideo: ->
-    endsWithAnyOf @filename, ['.mov', '.mp4', '.avi', '.mpeg', '.mkv', '.flv', '.3gp', '.3g2', '.m4v', '.m2v', '.webm']
+    endsWithAnyOf @filename, ['.mov', '.mp4', '.avi', '.mpeg', '.mkv', '.flv', '.3gp', '.3g2', '.m4v', '.m2v', '.webm', '.wmv']
   isImage: ->
     endsWithAnyOf @filename, ['.jpg', '.jpeg', '.png', '.gif']
   moment: (d) ->
