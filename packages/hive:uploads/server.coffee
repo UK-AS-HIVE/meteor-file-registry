@@ -33,7 +33,7 @@ Meteor.methods
     check data, Uint8Array
     check offset, Number
 
-    @unblock()
+    #@unblock()
 
     fs = Npm.require 'fs'
 
@@ -57,7 +57,7 @@ Meteor.methods
         $set:
           uploaded: f.size+data.length
     else
-      FileRegistry.insert
+      f = _id: FileRegistry.insert
         filename: filename
         filenameOnDisk: fn
         uploaded: offset+data.length
@@ -68,4 +68,6 @@ Meteor.methods
   
     if offset+data.length >= total
       FileRegistry.scheduleJobsForFile fn
+
+    return f._id
 

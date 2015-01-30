@@ -1,9 +1,9 @@
 @WebMedia =
-  pickLocalFile: ->
+  pickLocalFile: (cb) ->
     fileInput = $('<input type="file" multiple />')
     fileInput.on 'change', (e) ->
       console.log e.target.files
-      _.each e.target.files, sendFile
+      _.each e.target.files, (f) -> sendFile f, cb
     fileInput.trigger 'click'
     return
   capturePhoto: ->
