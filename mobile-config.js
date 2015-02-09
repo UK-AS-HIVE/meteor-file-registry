@@ -1,5 +1,5 @@
 App.info({
-  name: 'Hive Mobile Platform',
+  name: 'HiveMobilePlatform',
   description: 'Boilerplate for mobile apps',
   version: '0.0.1'
 });
