@@ -9,8 +9,6 @@ mizzao:bootstrap-3
 coffeescript
 meteorhacks:fast-render
 hive:file-registry
-hive:uploads
-hive:media-capture
 percolatestudio:synced-cron
 momentjs:moment
 

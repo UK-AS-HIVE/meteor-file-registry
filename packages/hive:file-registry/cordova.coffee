@@ -1,4 +1,4 @@
-@CordovaMedia =
+@Media =
   pickLocalFile: ->
     # TODO: Get file from local fs/photo library
     return

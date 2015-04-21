@@ -21,8 +21,6 @@ fastclick@1.0.2
 follower-livedata@1.0.3
 geojson-utils@1.0.2
 hive:file-registry@0.0.0
-hive:media-capture@0.1.0
-hive:uploads@1.0.0
 html-tools@1.0.3
 htmljs@1.0.3
 http@1.0.10

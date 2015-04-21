@@ -1,4 +1,4 @@
-@WebMedia =
+@Media =
   pickLocalFile: (cb) ->
     fileInput = $('<input type="file" multiple />')
     fileInput.on 'change', (e) ->
