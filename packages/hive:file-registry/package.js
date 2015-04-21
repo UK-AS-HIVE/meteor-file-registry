@@ -1,6 +1,7 @@
 Package.describe({
   summary: "Provides collection FileRegistry, which stores a manifest of all user-contributed files known to the app.",
-  name: "hive:file-registry"
+  name: "hive:file-registry",
+  version: "0.9.0"
 });
 
 Package.onUse(function(api, where) {
