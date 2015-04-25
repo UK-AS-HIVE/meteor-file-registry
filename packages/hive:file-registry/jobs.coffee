@@ -1,15 +1,18 @@
-execProcesses = (cmd) ->
+# returns an object with properties code and stdout, representing
+# the numeric exit code and accumulated stdout string of the executed
+# (or last executed) process
+execProcesses = (cmd, env) ->
   if cmd instanceof Array
     r = null
     for c in cmd
-      r = execProcesses c
+      r = execProcesses c, env
     return r
 
   exec = Npm.require('child_process').exec
   Future = Npm.require 'fibers/future'
   cwd = process.cwd().substr(0, process.cwd().lastIndexOf('.meteor'))
 
-  p = exec cmd, cwd: cwd
+  p = exec cmd, {cwd: cwd, env: env}
   f = new Future()
   parse_text = ''
 
@@ -17,7 +20,7 @@ execProcesses = (cmd) ->
     #Workers.log 'stdout: ' + data
     parse_text += data
   p.on 'close', (code, signal) =>
-    f.return parse_text
+    f.return {code: code, stdout: parse_text}
 
   return f.wait()
 
@@ -39,7 +42,7 @@ class @ThumbnailJob extends Job
 class @Md5Job extends Job
   handleJob: ->
     fn = @params.filenameOnDisk
-    md5 = execProcesses('md5 "'+FileRegistry.getFileRoot()+fn+'"')
+    md5 = execProcesses('md5 "'+FileRegistry.getFileRoot()+fn+'"').stdout
     md5 = md5.substr(md5.length-32)
     Cluster.log 'Md5Job: ', fn, '-', md5
 
@@ -47,7 +50,7 @@ class @Md5Job extends Job
 
 class @ExecJob extends Job
   handleJob: ->
-    execProcesses @params.cmd
+    execProcesses @params.cmd, @params.env
     #Workers.log 'Exec: ' + @params.command.command + ' ' + (if @params.command.args.join? then @params.command.args.join(' ') else @params.command.args)
 
 class @VideoTranscodeJob extends Job

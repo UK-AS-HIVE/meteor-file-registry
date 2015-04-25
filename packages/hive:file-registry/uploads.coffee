@@ -40,9 +40,15 @@ if Meteor.isServer
 
       fs = Npm.require 'fs'
 
+      filesdir = FileRegistry.getFileRoot()
+
+      # Make sure directory to store uploads in exists
+      if not fs.existsSync(filesdir)
+        fs.mkdirSync filesdir
+
       now = new Date()
       fn = @connection.id + '-' + filename
-      fs.writeFileSync FileRegistry.getFileRoot() + fn, new Buffer(data)
+      fs.writeFileSync filesdir + fn, new Buffer(data)
 
       FileRegistry.insert
         filename: filename
@@ -95,6 +101,14 @@ if Meteor.isServer
     
       if offset+data.length >= total
         FileRegistry.scheduleJobsForFile fn
+        onUploaded f
 
       return f._id
+
+FileRegistry.onUploaded = (cb) ->
+  FileRegistry._uploadedCallbacks = FileRegistry._uploadedCallbacks? || []
+  FileRegistry._uploadedCallbacks.push cb
+
+onUploaded = (fileDoc) ->
+  _.each FileRegistry._uploadedCallbacks, (cb) -> cb fileDoc
 
