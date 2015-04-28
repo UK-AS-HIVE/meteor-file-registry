@@ -52,7 +52,7 @@ if Meteor.isServer
   #   where: 'server'
   #   action: FileRegistry.serveFile
   FileRegistry.serveFile = ->
-    @check params.filename, String
+    check @params.filename, String
 
     fs = Npm.require 'fs'
     # TODO verify file exists
