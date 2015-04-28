@@ -8,7 +8,7 @@ Tinytest.add 'file registry - FileRegistry collection', (test) ->
 
   test.isNotNull FileRegistry.findOne(id)
 
-if Meteor.isServer
+if Meteor.isServer && Npm.require('cluster').isMaster
   Tinytest.add 'file registry - getFileRoot', (test) ->
     fileRoot = FileRegistry.getFileRoot()
 
@@ -25,7 +25,7 @@ if Meteor.isServer
     Job.push new Md5Job filenameOnDisk: 'movie.mp4'
 
   Tinytest.add 'jobs - ExecJob', (test) ->
-    Job.push new ExecJob 'echo hello'
+    Job.push new ExecJob cmd: 'echo hello'
 
   Tinytest.add 'jobs - VideoTranscodeJob', (test) ->
     Job.push new VideoTranscodeJob filenameOnDisk: 'video.avi', targetType: 'mp4'

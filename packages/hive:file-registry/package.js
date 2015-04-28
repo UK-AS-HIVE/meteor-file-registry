@@ -24,7 +24,7 @@ Package.onTest(function (api) {
   api.use('differential:workers@2.0.0');
 
   api.addFiles([
-    'file-registy-test.coffee',
+    'file-registry-test.coffee',
     ], ['client', 'server']);
 });
 
