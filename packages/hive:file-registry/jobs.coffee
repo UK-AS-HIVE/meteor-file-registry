@@ -12,14 +12,17 @@ execProcesses = (cmd, env) ->
   Future = Npm.require 'fibers/future'
   cwd = process.cwd().substr(0, process.cwd().lastIndexOf('.meteor'))
 
-  p = exec cmd, {cwd: cwd, env: env}
+  p = exec cmd, {cwd: cwd, env: env, maxBuffer: 1024*1024}
   f = new Future()
   parse_text = ''
 
   p.stdout.on 'data', (data) ->
     #Workers.log 'stdout: ' + data
     parse_text += data
-  p.on 'close', (code, signal) =>
+  p.stderr.on 'data', (data) ->
+    console.error data
+    parse_text += "(STDERR) #{data}"
+  p.on 'exit', (code, signal) =>
     f.return {code: code, stdout: parse_text}
 
   return f.wait()
