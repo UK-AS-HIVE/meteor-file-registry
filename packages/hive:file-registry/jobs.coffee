@@ -8,22 +8,26 @@ execProcesses = (cmd, env) ->
       r = execProcesses c, env
     return r
 
-  exec = Npm.require('child_process').exec
+  spawn = Npm.require('child_process').spawn
   Future = Npm.require 'fibers/future'
   cwd = process.cwd().substr(0, process.cwd().lastIndexOf('.meteor'))
 
-  p = exec cmd, {cwd: cwd, env: env, maxBuffer: 1024*1024}
+  #console.log "Spawning SHELL: #{process.env.SHELL}"
+  p = spawn process.env.SHELL, [], {cwd: cwd, env: env}
   f = new Future()
   parse_text = ''
 
   p.stdout.on 'data', (data) ->
-    #Workers.log 'stdout: ' + data
+    #Cluster.log data.toString()
     parse_text += data
   p.stderr.on 'data', (data) ->
-    console.error data
+    #console.error data.toString()
     parse_text += "(STDERR) #{data}"
   p.on 'exit', (code, signal) =>
     f.return {code: code, stdout: parse_text}
+
+  p.stdin.write cmd
+  p.stdin.end()
 
   return f.wait()
 
