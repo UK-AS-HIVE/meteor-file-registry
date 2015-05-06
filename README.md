@@ -1,21 +1,4 @@
-Hive Mobile Platform
+hive:file-registry
 ====================
 
-This project uses:
-
-[nodejs](https://github.com/joyent/node)
-
-[meteor](https://www.meteor.com/)
-
-and
-
-[meteorite](https://github.com/oortcloud/meteorite/)
-
-Install all 3 and run
-
-    mrt install
-    meteor
-
-in the base directory
-
-then navagate to http://localhost:3000
+Package implementing common file actions for HIVE applications. An example (with settings) is in the example directory.

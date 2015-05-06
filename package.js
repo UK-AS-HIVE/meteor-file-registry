@@ -1,7 +1,8 @@
 Package.describe({
-  summary: "Provides collection FileRegistry, which stores a manifest of all user-contributed files known to the app.",
+  summary: "Implements a file manifest and uploads for Meteor applications.",
   name: "hive:file-registry",
-  version: "0.9.1"
+  version: "0.9.1",
+  git: "https://github.com/UK-AS-HIVE/meteor-file-reigstry"
 });
 
 Package.onUse(function(api, where) {
