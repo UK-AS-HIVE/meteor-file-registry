@@ -2,6 +2,7 @@
 Package implementing common file actions for HIVE applications. An example (with settings) is in the example directory.
 
 ---
+
 ## API
 
 #### FileRegistry.findOne() - _anywhere_
@@ -34,7 +35,9 @@ _Example:_
 register a callback function to execute after an file finishes uploading.  The function will be passed a single parameter:
   * `fileDoc` - metadata about the file, from the FileRegistry collection
 
-### Media.pickLocalFile(cb) - _client_
+---
+
+#### Media.pickLocalFile(cb) - _client_
 opens a file selector on the client, and uploads selected files to the FileRegistry.  After the upload completes, the passed callback function will be called with a single parameter:
   * `fileId` - _id of uploaded document in FileRegistry collection
 
