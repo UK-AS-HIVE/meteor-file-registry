@@ -1,39 +1,49 @@
-hive:file-registry
-====================
-
+# hive:file-registry
 Package implementing common file actions for HIVE applications. An example (with settings) is in the example directory.
 
-API
 ---
+## API
 
-FileRegistry.findOne() - anywhere - returns an object with keys:
-  filename - name of file originally uploaded
-  filenameOnDisk - unique name within FileRegistry.getFileRoot()
-  uploaded - number of bytes transmitted to server
-  size - number of bytes of the file
-  timestamp - when the file was uploaded
-  userId - user id of uploader
-  md5 - checksum
-  thumbnail - name of file on disk of a thumbnail generated for the file
-
-
-FileRegistry.getFileRoot() - server - returns local filesystem path used to store uploads and registered files, e.g., /home/user/app/.meteor/files
-
-
-FileRegistry.serveFile - server - plug into iron:router to create a server-side route for serving uploads
-
-Example:
-
-    #TODO
+#### FileRegistry.findOne() - _anywhere_
+returns an object with keys:
+  * `filename` - name of file originally uploaded
+  * `filenameOnDisk` - unique name within FileRegistry.getFileRoot()
+  * `uploaded` - number of bytes transmitted to server
+  * `size` - number of bytes of the file
+  * `timestamp` - when the file was uploaded
+  * `userId` - user id of uploader
+  * `md5` - checksum
+  * `thumbnail` - name of file on disk of a thumbnail generated for the file
 
 
-sendFile(file, cb) - client - upload a File using DDP
+#### FileRegistry.getFileRoot() - _server_
+returns local filesystem path used to store uploads and registered files, e.g., /home/user/app/.meteor/files
 
-FileRegistry.onUploaded(cb) - server - execute cb, a function with params (fileDoc)
 
-Media.capturePhoto() - client - take a photo using the default photo app or a webcam in browser, and send it to the server
+#### FileRegistry.serveFile - _server_
+plug into iron:router to create a server-side route for serving uploads
 
-Media.captureAudio() - client - capture an audio clip using the default recording app or in browser, and send it to the server
+_Example:_
 
-Media.captureVideo() - client - capture a video clip using the default video recording app, and send it to the server
+    Router.route 'serveFile',
+      path: '/file/:filename'
+      where: 'server'
+      action: FileRegistry.serveFile
+
+#### FileRegistry.onUploaded(cb) - _server_
+register a callback function to execute after an file finishes uploading.  The function will be passed a single parameter:
+  * `fileDoc` - metadata about the file, from the FileRegistry collection
+
+### Media.pickLocalFile(cb) - _client_
+opens a file selector on the client, and uploads selected files to the FileRegistry.  After the upload completes, the passed callback function will be called with a single parameter:
+  * `fileId` - _id of uploaded document in FileRegistry collection
+
+#### Media.capturePhoto() - _client_
+take a photo using the default photo app or a webcam in browser, and send it to the server
+
+#### Media.captureAudio() - _client_
+capture an audio clip using the default recording app or in browser, and send it to the server
+
+#### Media.captureVideo() - _client_
+capture a video clip using the default video recording app, and send it to the server
 
