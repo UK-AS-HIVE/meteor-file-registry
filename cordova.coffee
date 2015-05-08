@@ -12,7 +12,7 @@
       window.resolveLocalFileSystemURL path, sendFileEntry, fail
     captureError = (error) ->
       console.log('Error code: ' + error.code, null, 'Capture Error')
-      console.log('Full error: ' + JSON.stringify(error));
+      console.log('Full error: ' + JSON.stringify(error))
 
     navigator.device.capture.captureImage(captureSuccess, captureError)
   captureAudio: ->

@@ -42,15 +42,15 @@ if Meteor.isClient
       0,
       11
 
-   Tinytest.add 'media web+cordova - pickLocalFile', (test) ->
-     Media.pickLocalFile()
+  Tinytest.add 'media web+cordova - pickLocalFile', (test) ->
+    Media.pickLocalFile()
 
-   Tinytest.add 'media web+cordova - capturePhoto', (test) ->
-     Media.capturePhoto()
+  Tinytest.add 'media web+cordova - capturePhoto', (test) ->
+    Media.capturePhoto()
 
-   Tinytest.add 'media web+cordova - captureAudio', (test) ->
-     Media.captureAudio()
+  Tinytest.add 'media web+cordova - captureAudio', (test) ->
+    Media.captureAudio()
 
-   Tinytest.add 'media web+cordova - captureVideo', (test) ->
-     Media.captureVideo()
+  Tinytest.add 'media web+cordova - captureVideo', (test) ->
+    Media.captureVideo()
 
