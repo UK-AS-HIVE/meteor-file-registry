@@ -59,9 +59,11 @@ if Meteor.isServer
     # TODO permissions check
     expire = new Date()
     expire.setFullYear(expire.getFullYear()+1)
-    fd = fs.openSync FileRegistry.getFileRoot() + @params.filename, 'r'
+    fn = FileRegistry.getFileRoot() + @params.filename
+    fd = fs.openSync fn, 'r'
     try
       stat = fs.fstatSync fd
+      mimeType = Npm.require('mime').lookup fn
       if @request.headers.range?
         start = parseInt(@request.headers.range.substr('bytes='.length))
         end = parseInt(@request.headers.range.split('-').pop())
@@ -72,16 +74,16 @@ if Meteor.isServer
         @response.writeHead 206,
           'Content-Range': 'bytes '+start+'-'+(start+bytesRead-1) + '/' + stat.size
           'Content-Length': bytesRead
-          'Content-Type': 'video/mp4'
+          'Content-Type': mimeType
           'Accept-Ranges': 'bytes'
           'Cache-Control': 'no-cache'
         @response.end buffer.slice(0,bytesRead)
       else
         @response.writeHead 200,
           'Content-Disposition': 'attachment; filename='+@params.filename.substr(@params.filename.indexOf('-')+1)
-          'Content-type': 'image/jpg'
+          'Content-type': mimeType
           'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
-        @response.end fs.readFileSync (FileRegistry.getFileRoot() + @params.filename)
+        @response.end fs.readFileSync fn
     catch e
       console.log 'exception from request: ', @params.filename, @request.headers.range
       console.log e

@@ -5,6 +5,8 @@ Package.describe({
   git: "https://github.com/UK-AS-HIVE/meteor-file-reigstry"
 });
 
+Npm.depends({mime: '1.3.4'});
+
 Package.onUse(function(api, where) {
   api.versionsFrom("METEOR@1.0");
   api.use(['coffeescript', 'aldeed:collection2@2.2.0', 'mongo'], ['client', 'server']);
