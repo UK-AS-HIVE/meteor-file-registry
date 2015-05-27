@@ -32,12 +32,11 @@ if Meteor.isServer
     return filePath + '/files/'
 
   FileRegistry.scheduleJobsForFile = (filenameOnDisk) ->
-    #I'm tentatively making this package depend on differential:workers, and moving the jobs into this package.
-    #The jobs themselves depend on this package, so either this function should be moved out of this package or the jobs should be moved in.
     images = ['jpg', 'jpeg', 'png', 'gif', 'tif', 'tiff', 'tga', 'bmp', 'cr2']
-    videos = ['mp4', 'mpeg', 'avi', 'mov', 'webm', 'flv', 'mkv', '3gp', 'm4v', '3g2', 'm2v', 'wmv'] #This is a pretty extensive list
+    videos = ['mp4', 'mpeg', 'avi', 'mov', 'webm', 'flv', 'mkv', '3gp', 'm4v', '3g2', 'm2v', 'wmv']
+    other = ['pdf', 'txt']
     Job.push new Md5Job filenameOnDisk: filenameOnDisk
-    if endsWithAnyOf filenameOnDisk, images.concat(videos)
+    if endsWithAnyOf filenameOnDisk, images.concat(videos).concat(other)
       Job.push new ThumbnailJob filenameOnDisk: filenameOnDisk
     if endsWithAnyOf filenameOnDisk, videos
       targetType = Meteor.settings.fileRegistry?.videoTargetType? or 'mp4'
