@@ -16,6 +16,9 @@ returns an object with keys:
   * `md5` - checksum
   * `thumbnail` - name of file on disk of a thumbnail generated for the file
 
+#### FileRegistry.upload(file, cb) - _client_
+Uploads a File or Blob to the server, and invokes cb when done uploading.  The function cb will be passed a single parameter:
+  * `fileId` - id representing the uploaded file in FileRegistry
 
 #### FileRegistry.getFileRoot() - _server_
 returns local filesystem path used to store uploads and registered files, e.g., /home/user/app/.meteor/files

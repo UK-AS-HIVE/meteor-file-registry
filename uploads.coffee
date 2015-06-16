@@ -1,9 +1,10 @@
 if Meteor.isClient
+
   # file - browser File object
   # cb - if specified, it will be called with the _id
   # of the newly created FileRegistry document as its only
   # parameter
-  @sendFile = (file, cb) ->
+  FileRegistry.upload = @sendFile = (file, cb) ->
     console.log 'Uploading file', file
     file.slice = file.slice || file.webkitSlice || file.mozSlice
     sliceSize = 1024*256
