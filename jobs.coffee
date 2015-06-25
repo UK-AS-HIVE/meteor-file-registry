@@ -39,7 +39,12 @@ class @ThumbnailJob extends Job
     thumbnail = fd.substr(0,fd.lastIndexOf('.'))+'_thumbnail.jpg'
     dst = fr+thumbnail
     ext = fd.substr(fd.lastIndexOf('.')).toLowerCase()
-    cmd = "convert \"#{src}[0]\" -thumbnail 128x128 \"#{dst}\""
+
+    cmd =
+      if ext in ['.pdf', '.ps']
+        "gs -dBATCH -dNOPAUSE -sDEVICE=jpeg -r300x300 -sOutputFile=\"#{dst}\" \"#{src}\""
+      else
+        "convert \"#{src}[0]\" -thumbnail 128x128 -background white \"#{dst}\""
 
     execProcesses cmd
 
