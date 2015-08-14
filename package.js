@@ -1,11 +1,15 @@
 Package.describe({
   summary: "Implements a file manifest and uploads for Meteor applications.",
   name: "hive:file-registry",
-  version: "0.9.4",
+  version: "0.9.5",
   git: "https://github.com/UK-AS-HIVE/meteor-file-registry"
 });
 
 Npm.depends({mime: '1.3.4'});
+
+Cordova.depends({
+  "org.apache.cordova.media-capture": "0.3.2"
+});
 
 Package.onUse(function(api, where) {
   api.versionsFrom("METEOR@1.0");
