@@ -43,7 +43,7 @@ class @ThumbnailJob extends Job
 
     cmd =
       if ext in ['.pdf', '.ps']
-        "gs -dBATCH -dNOPAUSE -sDEVICE=jpeg -r300x300 -sOutputFile=\"#{tmp}\" \"#{src}\" && convert \"#{tmp}\" -thumbnail 128x128 -background white \"#{dst}\" && rm \"#{tmp}\""
+        "gs -dBATCH -dNOPAUSE -sDEVICE=jpeg -sOutputFile=\"#{tmp}\" \"#{src}\" && convert \"#{tmp}\" -thumbnail 128x128 -background white \"#{dst}\" && rm \"#{tmp}\""
       else
         "convert \"#{src}[0]\" -thumbnail 128x128 -background white \"#{dst}\""
 
