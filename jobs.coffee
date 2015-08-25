@@ -37,12 +37,13 @@ class @ThumbnailJob extends Job
     fd = @params.filenameOnDisk
     src = fr+fd
     thumbnail = fd.substr(0,fd.lastIndexOf('.'))+'_thumbnail.jpg'
+    tmp = fd.substr(0,fd.lastIndexOf('.'))+'_thumbnail_tmp.jpg'
     dst = fr+thumbnail
     ext = fd.substr(fd.lastIndexOf('.')).toLowerCase()
 
     cmd =
       if ext in ['.pdf', '.ps']
-        "gs -dBATCH -dNOPAUSE -sDEVICE=jpeg -r300x300 -sOutputFile=\"#{dst}\" \"#{src}\""
+        "gs -dBATCH -dNOPAUSE -sDEVICE=jpeg -r300x300 -sOutputFile=\"#{tmp}\" \"#{src}\" && convert \"#{tmp}\" -thumbnail 128x128 -background white \"#{dst}\" && rm \"#{tmp}\""
       else
         "convert \"#{src}[0]\" -thumbnail 128x128 -background white \"#{dst}\""
 
