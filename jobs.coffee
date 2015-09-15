@@ -55,7 +55,8 @@ class @ThumbnailJob extends Job
 class @Md5Job extends Job
   handleJob: ->
     fn = @params.filenameOnDisk
-    md5 = execProcesses('md5 "'+FileRegistry.getFileRoot()+fn+'"').stdout
+    md5program = if process.platform is 'linux' then 'md5sum' else 'md5'
+    md5 = execProcesses(md5program+' "'+FileRegistry.getFileRoot()+fn+'"').stdout
     md5 = md5.substr(md5.length-32)
     Cluster.log 'Md5Job: ', fn, '-', md5
 
