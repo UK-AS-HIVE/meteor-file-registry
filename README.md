@@ -27,6 +27,10 @@ returns local filesystem path used to store uploads and registered files, e.g., 
 #### FileRegistry.serveFile - _server_
 plug into iron:router to create a server-side route for serving uploads
 
+FileRegistry.serveFile optionally accepts a single argument of an object with any of the following keys:
+
+  * `disposition` - defaults to `inline`, but specify `attachment` to force a download dialog on the client's browser
+
 _Example:_
 
     Router.route 'serveFile',

@@ -50,42 +50,52 @@ if Meteor.isServer
   #   path: '/file/:filename'
   #   where: 'server'
   #   action: FileRegistry.serveFile
-  FileRegistry.serveFile = ->
-    check @params.filename, String
+  FileRegistry.serveFile = (options) ->
+    options = _.extend
+      disposition: 'inline'
+    , options
+    serveFile = ->
+      check @params.filename, String
 
-    fs = Npm.require 'fs'
-    # TODO verify file exists
-    # TODO permissions check
-    expire = new Date()
-    expire.setFullYear(expire.getFullYear()+1)
-    fn = FileRegistry.getFileRoot() + @params.filename
-    fd = fs.openSync fn, 'r'
-    try
-      stat = fs.fstatSync fd
-      mimeType = Npm.require('mime').lookup fn
-      if @request.headers.range?
-        start = parseInt(@request.headers.range.substr('bytes='.length))
-        end = parseInt(@request.headers.range.split('-').pop())
-        bufferSize = if isNaN(end) then Math.min(1024*1024,stat.size) else (1+end-start)
-        console.log 'bufferSize: ', bufferSize
-        buffer = new Buffer(bufferSize)
-        bytesRead = fs.readSync fd, buffer, 0, bufferSize, Math.min(start, stat.size)
-        @response.writeHead 206,
-          'Content-Range': 'bytes '+start+'-'+(start+bytesRead-1) + '/' + stat.size
-          'Content-Length': bytesRead
-          'Content-Type': mimeType
-          'Accept-Ranges': 'bytes'
-          'Cache-Control': 'no-cache'
-        @response.end buffer.slice(0,bytesRead)
-      else
-        @response.writeHead 200,
-          'Content-Disposition': 'attachment; filename='+@params.filename.substr(@params.filename.indexOf('-')+1)
-          'Content-type': mimeType
-          'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
-        @response.end fs.readFileSync fn
-    catch e
-      console.log 'exception from request: ', @params.filename, @request.headers.range
-      console.log e
-    finally
-      fs.closeSync fd
+      fs = Npm.require 'fs'
+      # TODO verify file exists
+      # TODO permissions check
+      expire = new Date()
+      expire.setFullYear(expire.getFullYear()+1)
+      fn = FileRegistry.getFileRoot() + @params.filename
+      fd = fs.openSync fn, 'r'
+      try
+        stat = fs.fstatSync fd
+        mimeType = Npm.require('mime').lookup fn
+        if @request.headers.range?
+          start = parseInt(@request.headers.range.substr('bytes='.length))
+          end = parseInt(@request.headers.range.split('-').pop())
+          bufferSize = if isNaN(end) then Math.min(1024*1024,stat.size) else (1+end-start)
+          console.log 'bufferSize: ', bufferSize
+          buffer = new Buffer(bufferSize)
+          bytesRead = fs.readSync fd, buffer, 0, bufferSize, Math.min(start, stat.size)
+          @response.writeHead 206,
+            'Content-Range': 'bytes '+start+'-'+(start+bytesRead-1) + '/' + stat.size
+            'Content-Length': bytesRead
+            'Content-Type': mimeType
+            'Accept-Ranges': 'bytes'
+            'Cache-Control': 'no-cache'
+          @response.end buffer.slice(0,bytesRead)
+        else
+          @response.writeHead 200,
+            'Content-Disposition': "#{options.disposition}; filename="+@params.filename.substr(@params.filename.indexOf('-')+1)
+            'Content-type': mimeType
+            'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
+          @response.end fs.readFileSync fn
+      catch e
+        console.log 'exception from request: ', @params.filename, @request.headers.range
+        console.log e
+      finally
+        fs.closeSync fd
+    if @params?
+      serveFile.call @
+    else
+      # Maintain compatibility with pre-0.9.8, where
+      # serveFile was passed directly to router action
+      serveFile
 
