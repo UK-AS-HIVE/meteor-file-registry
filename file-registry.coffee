@@ -12,6 +12,9 @@ FileRegistry = new Mongo.Collection 'fileRegistry'
     type: String
 ###
 
+if Meteor.isClient
+  FileRegistry.serveFile = ->
+    return
 
 if Meteor.isServer
   endsWithAnyOf =  (filename, extensions) ->
