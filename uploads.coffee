@@ -10,6 +10,7 @@ if Meteor.isClient
     sliceSize = 1024*256
     console.log 'file is '+file.size+' bytes, so we need to slice into '+(file.size/sliceSize)+' slices'
     cbCalled = false
+    uploadId = new Mongo.ObjectID()._str
 
     sendSlice = (file, start) ->
       if start > file.size
@@ -20,7 +21,7 @@ if Meteor.isClient
       reader = new FileReader()
       reader.onloadend = (e) ->
         blob = new Uint8Array(@result)
-        Meteor.call "uploadSlice", file.name , blob, start, file.size, (error, result) ->
+        Meteor.call "uploadSlice", file.name, uploadId, blob, start, file.size, (error, result) ->
           if result? and cbCalled is false and cb?
             cbCalled = true
             cb result
@@ -62,7 +63,7 @@ if Meteor.isServer
 
       FileRegistry.scheduleJobsForFile fn
 
-    'uploadSlice': (filename, data, offset, total) ->
+    'uploadSlice': (filename, uploadId, data, offset, total) ->
       console.log 'uploadSlice', filename, offset, total
 
       check filename, String
@@ -84,7 +85,7 @@ if Meteor.isServer
         fs.mkdirSync filesdir
 
       now = new Date()
-      fn = @connection.id + '-' + filename
+      fn = @connection.id + '-' + uploadId + '-' + filename
       fs.appendFileSync filesdir + fn, new Buffer(data)
 
       f = FileRegistry.findOne {filename: filename, filenameOnDisk: fn, userId: @userId}
