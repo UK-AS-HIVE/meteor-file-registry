@@ -55,9 +55,20 @@ class @ThumbnailJob extends Job
 class @Md5Job extends Job
   handleJob: ->
     fn = @params.filenameOnDisk
-    md5program = if process.platform is 'linux' then 'md5sum' else 'md5'
-    md5 = execProcesses(md5program+' "'+FileRegistry.getFileRoot()+fn+'"').stdout
-    md5 = md5.substr(md5.length-32)
+    fs = Npm.require 'fs'
+    crypto = Npm.require 'crypto'
+    Future = Npm.require 'fibers/future'
+
+    f = new Future()
+    s = fs.ReadStream (FileRegistry.getFileRoot()+fn)
+    md5sum = crypto.createHash 'md5'
+    s.on 'data', (d) ->
+      md5sum.update d
+    s.on 'end', (d) ->
+      md5 = md5sum.digest 'hex'
+      f.return md5
+
+    md5 = f.wait()
     Cluster.log 'Md5Job: ', fn, '-', md5
 
     FileRegistry.update {filenameOnDisk: fn}, {$set: {md5: md5} }
