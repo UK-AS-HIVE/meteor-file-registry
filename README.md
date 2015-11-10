@@ -29,7 +29,13 @@ plug into iron:router to create a server-side route for serving uploads
 
 FileRegistry.serveFile optionally accepts a single argument of an object with any of the following keys:
 
-  * `disposition` - defaults to `inline`, but specify `attachment` to force a download dialog on the client's browser
+  * `disposition` - defaults to `inline`, but specify `attachment` to force a
+    download dialog on the client's browser
+  * `allowAccess` - function to verify that the requester has permissions to
+    download the file.  `this` inside the function will be the Express context
+    passed into the server-side route handler.  function should return `true` to
+    grant access and continue serving the file, or `false` to generate a 403 error.
+    If unspecified, access will be granted to any requester.
 
 _Example:_
 

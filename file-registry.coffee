@@ -56,13 +56,19 @@ if Meteor.isServer
   FileRegistry.serveFile = (options) ->
     options = _.extend
       disposition: 'inline'
+      allowAccess: -> true
     , options
     serveFile = ->
       check @params.filename, String
 
       fs = Npm.require 'fs'
       # TODO verify file exists
-      # TODO permissions check
+
+      grantAccess = options.allowAccess.call @
+      unless grantAccess
+        @response.status(403).end()
+        return
+
       expire = new Date()
       expire.setFullYear(expire.getFullYear()+1)
       fn = FileRegistry.getFileRoot() + @params.filename
