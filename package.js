@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Implements a file manifest and uploads for Meteor applications.",
   name: "hive:file-registry",
-  version: "0.9.12",
+  version: "0.9.13",
   git: "https://github.com/UK-AS-HIVE/meteor-file-registry"
 });
 
@@ -14,7 +14,7 @@ Cordova.depends({
 Package.onUse(function(api, where) {
   api.versionsFrom("METEOR@1.0");
   api.use(['coffeescript', 'aldeed:collection2@2.2.0', 'mongo', 'jquery', 'check'], ['client', 'server']);
-  api.use('differential:workers@2.0.4','server');
+  api.use('hive:workers@2.0.5','server');
   api.addFiles(['file-registry.coffee'], ['client', 'server']);
   api.addFiles('jobs.coffee', 'server');
   api.addFiles('uploads.coffee', ['client','server']);
@@ -29,7 +29,7 @@ Package.onTest(function (api) {
   api.use('hive:file-registry');
   api.use('tinytest');
   api.use('test-helpers');
-  api.use('differential:workers@2.0.0');
+  api.use('hive:workers@2.0.5');
 /*
   api.addFiles([
     'file-registry-test.coffee',
