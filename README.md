@@ -54,6 +54,12 @@ register a callback function to execute after an file finishes uploading.  The f
 opens a file selector on the client, and uploads selected files to the FileRegistry.  After the upload completes, the passed callback function will be called with a single parameter:
   * `fileId` - _id of uploaded document in FileRegistry collection
 
+
+#### Media.pickLocalFile(options, cb) - _client_
+opens a file selector on the client, and uploads selected files to the FileRegistry. Accepts an options object that contains any valid input tag attributes. After the upload completes, the passed callback function will be called with a single parameter:
+  * `fileId` - _id of uploaded document in FileRegistry collection
+
+
 #### Media.capturePhoto(cb) - _client_
 take a photo using the default photo app or a webcam in browser, and send it to the server. After the upload completes, the passed callback function will be called with a single parameter:
  * `fileId` - _id of uploaded document in FileRegistry collection

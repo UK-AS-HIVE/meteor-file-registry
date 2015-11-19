@@ -6,6 +6,15 @@
       _.each e.target.files, (f) -> sendFile f, cb
     fileInput.trigger 'click'
     return
+  pickLocalFile: (options, cb) ->
+    fileInput = $('<input type="file" multiple />')
+    for key, value of options
+      $(fileInput).attr(key, value)
+    fileInput.on 'change', (e) ->
+      console.log e.target.files
+      _.each e.target.files, (f) -> sendFile f, cb
+    fileInput.trigger 'click'
+    return
   capturePhoto: ->
     # TODO: Take snapshot from webcam or phone camera
     return
