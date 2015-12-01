@@ -1,6 +1,6 @@
 @Media =
   pickLocalFile: (options, cb) ->
-    if typeof options === "function"
+    if typeof options == "function"
       cb = options
       options = {}
     fileInput = $('<input type="file" multiple />')
