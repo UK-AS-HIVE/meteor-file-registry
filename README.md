@@ -55,7 +55,12 @@ opens a file selector on the client, and uploads selected files to the
 FileRegistry.  Accepts an options object that contains any valid input tag
 attributes. After each file in the upload completes, the passed callback
 function will be called with a single parameter:
-  * `fileId` - _id of uploaded document in FileRegistry collection
+  * `fileId` - `_id` of uploaded document in FileRegistry collection
+
+_Example:_
+
+    Media.pickLocalFile {multiple: true, accept '*.jpg'}, (fileId) ->
+      console.log "Completed upload of new file, ", fileId
 
 #### Media.capturePhoto(cb) - _client_
 take a photo using the default photo app or a webcam in browser, and send it to the server. After the upload completes, the passed callback function will be called with a single parameter:
