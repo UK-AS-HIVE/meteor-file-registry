@@ -59,7 +59,7 @@ function will be called with a single parameter:
 
 _Example:_
 
-    Media.pickLocalFile {multiple: true, accept '*.jpg'}, (fileId) ->
+    Media.pickLocalFile {multiple: true, accept: '*.jpg'}, (fileId) ->
       console.log "Completed upload of new file, ", fileId
 
 #### Media.capturePhoto(cb) - _client_
