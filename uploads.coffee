@@ -12,9 +12,10 @@ if Meteor.isClient
     cbCalled = false
     uploadId = new Mongo.ObjectID()._str
 
-    sendSlice = (file, start) ->
+    sendSlice = (file, start, result) ->
       if start > file.size
         console.log 'done sending file!'
+        cb? result
         return
       slice = file.slice(start, start+sliceSize)
       console.log 'Sending slice '+start+' - '+(start+sliceSize)
@@ -22,10 +23,7 @@ if Meteor.isClient
       reader.onloadend = (e) ->
         blob = new Uint8Array(@result)
         Meteor.call "uploadSlice", file.name, uploadId, blob, start, file.size, (error, result) ->
-          if result? and cbCalled is false and cb?
-            cbCalled = true
-            cb result
-          sendSlice file, start+sliceSize
+          sendSlice file, start+sliceSize, result
       reader.readAsArrayBuffer slice
 
     sendSlice file, 0
