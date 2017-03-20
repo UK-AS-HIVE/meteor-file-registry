@@ -91,9 +91,13 @@ if Meteor.isServer
             'Cache-Control': 'no-cache'
           @response.end buffer.slice(0,bytesRead)
         else
+          acceptableFilename = @params.filename
+          acceptableFilename = acceptableFilename.substr(acceptableFilename.indexOf('-')+1)
+          acceptableFilename = acceptableFilename.substr(acceptableFilename.indexOf('-')+1)
+          acceptableFilename = encodeURI acceptableFilename
           @response.writeHead 200,
-            'Content-Disposition': "#{options.disposition}; filename=\""+@params.filename.substr(@params.filename.indexOf('-')+1) + "\""
             'Content-type': mimeType
+            'Content-Disposition': "#{options.disposition}; filename*=UTF-8''#{acceptableFilename}"
             'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
           @response.end fs.readFileSync fn
       catch e

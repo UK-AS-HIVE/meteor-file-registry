@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Implements a file manifest and uploads for Meteor applications.",
   name: "hive:file-registry",
-  version: "0.9.17",
+  version: "0.9.18",
   git: "https://github.com/UK-AS-HIVE/meteor-file-registry"
 });
 
