@@ -92,7 +92,7 @@ if Meteor.isServer
           @response.end buffer.slice(0,bytesRead)
         else
           @response.writeHead 200,
-            'Content-Disposition': "#{options.disposition}; filename=\""+@params.filename.substr(@params.filename.indexOf('-')+1 + "\"")
+            'Content-Disposition': "#{options.disposition}; filename=\""+@params.filename.substr(@params.filename.indexOf('-')+1) + "\""
             'Content-type': mimeType
             'Expires': moment(expire).format('ddd, DD MMM YYYY HH:mm:ss GMT')
           @response.end fs.readFileSync fn
