@@ -94,7 +94,7 @@ if Meteor.isServer
           acceptableFilename = @params.filename
           acceptableFilename = acceptableFilename.substr(acceptableFilename.indexOf('-')+1)
           acceptableFilename = acceptableFilename.substr(acceptableFilename.indexOf('-')+1)
-          acceptableFilename = encodeURI acceptableFilename
+          acceptableFilename = encodeURIComponent acceptableFilename
           @response.writeHead 200,
             'Content-type': mimeType
             'Content-Disposition': "#{options.disposition}; filename*=UTF-8''#{acceptableFilename}"
