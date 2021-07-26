@@ -1,29 +1,44 @@
 if Meteor.isClient
 
   # file - browser File object
-  # cb - if specified, it will be called with the _id
-  # of the newly created FileRegistry document as its only
-  # parameter
-  FileRegistry.upload = @sendFile = (file, cb) ->
+  # options - optional object with following keys
+  #   immediate - if true, invoke callback function as soon as the file has
+  #     begun to upload, instead of waiting for completion
+  # cb - if specified, it
+  #   will be called with the _id of the newly created FileRegistry document as
+  #   its only parameter
+  FileRegistry.upload = @sendFile = (file, options, cb) ->
     console.log 'Uploading file', file
     file.slice = file.slice || file.webkitSlice || file.mozSlice
     sliceSize = 1024*256
     console.log 'file is '+file.size+' bytes, so we need to slice into '+(file.size/sliceSize)+' slices'
     cbCalled = false
     uploadId = new Mongo.ObjectID()._str
+    if not cb? and typeof options == "function"
+      cb = options
+      options =
+        immediate: false
+
+    console.log 'upload options: ', options
 
     sendSlice = (file, start, result) ->
-      if start > file.size
-        console.log 'done sending file!'
+      if options.immediate && result && !cbCalled
+        cbCalled = true
         cb? result
+      if start >= file.size
+        console.log 'done sending file!'
+        unless options.immediate
+          cbCalled = true
+          cb? result
         return
-      slice = file.slice(start, start+sliceSize)
-      console.log 'Sending slice '+start+' - '+(start+sliceSize)
+      sliceEnd = Math.min(file.size, start+sliceSize)
+      slice = file.slice(start, sliceEnd)
+      console.log 'Sending slice '+start+' - '+sliceEnd
       reader = new FileReader()
       reader.onloadend = (e) ->
         blob = new Uint8Array(@result)
         Meteor.call "uploadSlice", file.name, uploadId, blob, start, file.size, (error, result) ->
-          sendSlice file, start+sliceSize, result
+          sendSlice file, sliceEnd, result
       reader.readAsArrayBuffer slice
 
     sendSlice file, 0
@@ -62,7 +77,7 @@ if Meteor.isServer
       FileRegistry.scheduleJobsForFile fn
 
     'uploadSlice': (filename, uploadId, data, offset, total) ->
-      console.log 'uploadSlice', filename, offset, total
+      console.log 'uploadSlice', filename, offset, data.length, total
 
       check filename, String
       check data, Uint8Array
@@ -90,7 +105,7 @@ if Meteor.isServer
       if f?
         FileRegistry.update f._id,
           $set:
-            uploaded: f.size+data.length
+            uploaded: offset+data.length
       else
         f = _id: FileRegistry.insert
           filename: filename

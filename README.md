@@ -16,9 +16,11 @@ returns an object with keys:
   * `md5` - checksum
   * `thumbnail` - name of file on disk of a thumbnail generated for the file
 
-#### FileRegistry.upload(file, cb) - _client_
+#### FileRegistry.upload(file, [options,] cb) - _client_
 Uploads a File or Blob to the server, and invokes cb when done uploading.  The function cb will be passed a single parameter:
   * `fileId` - id representing the uploaded file in FileRegistry
+
+If `options` is passed with the key `immediate` set to True, then cb will be called as soon as `fileId` is available, instead of waiting for the upload to complete
 
 #### FileRegistry.getFileRoot() - _server_
 returns local filesystem path used to store uploads and registered files, e.g., /home/user/app/.meteor/files
@@ -53,18 +55,22 @@ register a callback function to execute after an file finishes uploading.  The f
 #### Media.pickLocalFile([options,] cb) - _client_
 opens a file selector on the client, and uploads selected files to the
 FileRegistry.  Accepts an options object that contains any valid input tag
-attributes. After each file in the upload completes, the passed callback
+attributes.
+  * `options` - if specified, the following keys maybe present:
+    * `immediate` - if set to True, then cb will be called as soon as `fileId` is available, instead of waiting for the upload to complete
+    * `attributes` - if present, attributes will be added to the temporary `<input>` tag verbatim
+  * `cb` - After each file in the upload completes, the passed callback
 function will be called with a single parameter:
-  * `fileId` - `_id` of uploaded document in FileRegistry collection
+    * `fileId` - `_id` of uploaded document in FileRegistry collection
 
 _Example:_
 
-    Media.pickLocalFile {multiple: true, accept: '.jpg'}, (fileId) ->
+    Media.pickLocalFile {attributes: {multiple: true, accept: '.jpg'}}, (fileId) ->
       console.log "Completed upload of new file, ", fileId
 
 #### Media.capturePhoto(cb) - _client_
 take a photo using the default photo app or a webcam in browser, and send it to the server. After the upload completes, the passed callback function will be called with a single parameter:
- * `fileId` - _id of uploaded document in FileRegistry collection
+  * `fileId` - _id of uploaded document in FileRegistry collection
 
 #### Media.captureAudio() - _client_
 capture an audio clip using the default recording app or in browser, and send it to the server

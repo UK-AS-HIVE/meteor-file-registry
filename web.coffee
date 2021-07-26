@@ -4,11 +4,13 @@
       cb = options
       options = {}
     fileInput = $('<input type="file" multiple />')
-    for key, value of options
-      $(fileInput).attr(key, value)
+    if options.attributes?
+      for key, value of options.attributes
+        $(fileInput).attr(key, value)
+      delete options.attributes
     fileInput.on 'change', (e) ->
       console.log e.target.files
-      _.each e.target.files, (f) -> sendFile f, cb
+      _.each e.target.files, (f) -> sendFile f, options, cb
     fileInput.trigger 'click'
     return
   capturePhoto: ->
